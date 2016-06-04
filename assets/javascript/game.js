@@ -5,6 +5,7 @@ $("#searchButton").on("click",function(){
 	var newButton = $("<button>");
 
 	newButton.addClass("animalButton");
+	newButton.addClass("btn btn-default");
 	newButton.text(animal);
 	$("#buttons").append(newButton);
 
@@ -41,10 +42,8 @@ $(document).on('click', '.animalButton',function() {
 	            animalImage.attr("data-still", results[i].images.fixed_height_still.url);
 	            animalImage.attr("data-animate",results[i].images.fixed_height.url);
 
-	            animalDiv.append(p);
-	            animalDiv.append(animalImage);
-
-	            $('#gifs').prepend(animalDiv);
+	            $('#gifs').append(p);
+	            $("#gifs").append(animalImage);
 	        }
 
 	    });
