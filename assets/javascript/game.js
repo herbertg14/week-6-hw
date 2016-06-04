@@ -1,124 +1,43 @@
-var object1 = {
-	amount: 0
-}
+$("#searchButton").on("click",function(){
 
-var object2 = {
-	amount: 0
-}
+	var animal = $("#searchInput").val().trim();
 
-var object3 = {
-	amount: 0
-}
+	var newButton = $("<button>");
 
-var object4 = {
-	amount: 0
-}
+	newButton.addClass("animalButton");
+	newButton.text(animal);
+	$("#buttons").append(newButton);
 
-var youLost = false;
-var youWon = false;
-var wins = 0;
-var loss = 0;
-var toBeat =0;
-var yourScore = 0;
-
-$('#crystal1').on('click', function() {
-	if((youLost == false) && (youWon == false)){
-		yourScore += object1.amount;
-		$("#yourScore").html(yourScore);
-	}
-
-	if (yourScore > toBeat){
-		loss += 1;
-		alert("You Lost!");
-		$("#losses").html(loss);
-		playGame();
-	}
-
-	if (yourScore === toBeat){
-		wins += 1;
-		alert("You Won!");
-		$("#wins").html(wins);
-		playGame();
-	}
 });
 
-$('#crystal2').on('click', function() {
-	if((youLost == false) && (youWon == false)){
-		yourScore += object2.amount;
-		$("#yourScore").html(yourScore);
-	}
-
-	if (yourScore > toBeat){
-		loss += 1;
-		alert("You Lost!");
-		$("#losses").html(loss);
-		playGame();
-	}
-
-	if (yourScore === toBeat){
-		wins += 1;
-		alert("You Won!");
-		$("#wins").html(wins);
-		playGame();
-	}
-});
-
-$('#crystal3').on('click', function() {
-	if((youLost == false) && (youWon == false)){
-		yourScore += object3.amount;
-		$("#yourScore").html(yourScore);
-	}
-
-	if (yourScore > toBeat){
-		loss += 1;
-		alert("You Lost!");
-		$("#losses").html(loss);
-		playGame();
-	}
-
-	if (yourScore === toBeat){
-		wins += 1;
-		alert("You Won!");
-		$("#wins").html(wins);
-		playGame();
-	}
-});
-
-$('#crystal4').on('click', function() {
-	if((youLost == false) && (youWon == false)){
-		yourScore += object4.amount;
-		$("#yourScore").html(yourScore);
-	}
-
-	if (yourScore > toBeat){
-		loss += 1;
-		alert("You Lost!");
-		$("#losses").html(loss);
-		playGame();
-	}
-
-	if (yourScore === toBeat){
-		wins += 1;
-		alert("You Won!");
-		$("#wins").html(wins);
-		playGame();
-	}
-});
+$('.animalButton').on('click', function() {
 
 
-function playGame(){
-	object1.amount = Math.floor((Math.random() * 12) + 1);
-	object2.amount = Math.floor((Math.random() * 12) + 1);
-	object3.amount = Math.floor((Math.random() * 12) + 1);
-	object4.amount = Math.floor((Math.random() * 12) + 1);
-	toBeat = Math.floor((Math.random() * 102) + 19);
+	var animal = $(this).val().trim();
+	var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + animal + "&api_key=dc6zaTOxFJmzC&limit=10";
 
-	yourScore = 0;
-	$("#yourScore").html(yourScore);
+	$.ajax({
+	        url: queryURL,
+	        method: 'GET'
+	    })
+	    .done(function(response) {
 
-	$("#score").html(toBeat);
-}
+	        var results = response.data;
 
-playGame();
+	        for (var i = 0; i < results.length; i++) {
 
+	            var animalDiv = $('<div>');
 
+	            var p = $('<p>').text("Rating: " + results[i].rating);
+
+	            var animalImage = $('<img>');
+	            animalImage.attr('src', results[i].images.fixed_height.url);
+
+	            animalDiv.append(p);
+	            animalDiv.append(animalImage);
+
+	            $('#gifs').prepend(animalDiv);
+	        }
+
+	    });
+	});
